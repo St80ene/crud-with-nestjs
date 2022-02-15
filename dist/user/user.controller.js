@@ -26,6 +26,15 @@ let UserController = class UserController {
     async register(user) {
         return this.userService.create(user);
     }
+    async getSingleUser(userId) {
+        return this.userService.findOneUser(userId);
+    }
+    async update(user) {
+        return this.userService.update(user);
+    }
+    async delete(userId) {
+        return this.userService.delete(userId);
+    }
 };
 __decorate([
     (0, common_1.Get)('users'),
@@ -40,6 +49,27 @@ __decorate([
     __metadata("design:paramtypes", [user_dto_1.CreateUserDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "register", null);
+__decorate([
+    (0, common_1.Get)('register/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getSingleUser", null);
+__decorate([
+    (0, common_1.Patch)('update'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_dto_1.CreateUserDto]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "update", null);
+__decorate([
+    (0, common_1.Delete)('register/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "delete", null);
 UserController = __decorate([
     (0, common_1.Controller)({
         path: 'api/v1',

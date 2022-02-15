@@ -1,7 +1,14 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Patch,
+  Delete,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/user.dto';
-// import { UserService } from './user/user.service';
 
 @Controller({
   path: 'api/v1',
@@ -12,8 +19,8 @@ export class UserController {
   ) {}
 
   @Get('users')
-  getUsers(){
-    return this.userService.findAll()
+  getUsers() {
+    return this.userService.findAll();
   }
 
   @Post('register')
@@ -21,15 +28,19 @@ export class UserController {
     return this.userService.create(user);
   }
 
-  // @Get('register/:id')
-  // async getSingleUser(@Param('id') userId: string) {
-  //   return this.userService.findOneUser(userId);
-  // }
+  @Get('register/:id')
+  async getSingleUser(@Param('id') userId: string) {
+    return this.userService.findOneUser(userId);
+  }
 
-  // @Get('register')
-  // getAllUsers(): any {
-  //   return this.userService.findAll();
-  // }
+  @Patch('update')
+  async update(@Body() user: CreateUserDto) {
+    return this.userService.update(user);
+  }
 
-  // @Delete('delete')
+  @Delete('register/:id')
+  async delete(@Param('id') userId: string) {
+    return this.userService.delete(userId);
+  }
+
 }

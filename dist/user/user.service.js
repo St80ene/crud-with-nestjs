@@ -21,17 +21,82 @@ let UserService = class UserService {
         this.userRepository = userRepository;
     }
     async findAll() {
-        return this.userRepository.find();
+        try {
+            return this.userRepository.find();
+        }
+        catch (error) {
+            return {
+                status: false,
+                message: 'Error finding user',
+                error: error.message,
+            };
+        }
     }
     async create(createUserDto) {
-        const user = new user_entity_1.User();
-        user.age = createUserDto.age;
-        user.fullName = createUserDto.fullName;
-        user.gender = createUserDto.gender;
-        return this.userRepository.save(user);
+        try {
+            const user = new user_entity_1.User();
+            user.age = createUserDto.age;
+            user.fullName = createUserDto.fullName;
+            user.gender = createUserDto.gender;
+            return this.userRepository.save(user);
+        }
+        catch (error) {
+            return {
+                status: false,
+                message: 'Error finding user',
+                error: error.message,
+            };
+        }
     }
     async findOneUser(req) {
-        return this.userRepository.findOne(req.id);
+        try {
+            return this.userRepository.findOne(req);
+        }
+        catch (error) {
+            return {
+                status: false,
+                message: 'Error finding user',
+                error: error.message,
+            };
+        }
+    }
+    async update(req) {
+        try {
+            const { id, fullName, age, gender, email } = req;
+            let user = await this.findOneUser(id);
+            if (!user)
+                return { status: false, message: 'User not found' };
+            if (req.age) {
+                user.age = req.age;
+            }
+            if (req.gender) {
+                user.gender = req.gender;
+            }
+            if (req.fullName) {
+                user.fullName = req.fullName;
+            }
+            return this.userRepository.save(user);
+        }
+        catch (error) {
+            return {
+                status: false,
+                message: 'Error updating user',
+                error: error.message,
+            };
+        }
+    }
+    async delete(req) {
+        try {
+            await this.userRepository.delete(req);
+            return { status: true, message: 'User deleted successfully' };
+        }
+        catch (error) {
+            return {
+                status: false,
+                message: 'Error deleting user',
+                error: error.message,
+            };
+        }
     }
 };
 UserService = __decorate([
