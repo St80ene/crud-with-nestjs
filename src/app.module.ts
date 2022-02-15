@@ -1,24 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ProductsModule } from './products/products.module';
-import { DynamooseModule } from 'nestjs-dynamoose';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './user/entitiy/user.entity';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    DynamooseModule.forRoot({
-      aws: {
-        accessKeyId: `${process.env.AWS_ACCESS_KEY}`,
-        secretAccessKey: `${process.env.AWS_SECRET_ACCESS_KEY}`,
-        region: `${process.env.AWS_REGION}`,
-      },
-    }),
-    ProductsModule,
-    UserModule,
-  ],
+  imports: [UserModule, ConfigModule.forRoot({ isGlobal: true })],
   controllers: [AppController],
   providers: [AppService],
 })

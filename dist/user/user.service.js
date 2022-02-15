@@ -14,40 +14,30 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
-const nestjs_dynamoose_1 = require("nestjs-dynamoose");
-const uuid_1 = require("uuid");
+const typeorm_1 = require("typeorm");
+const user_entity_1 = require("./entitiy/user.entity");
 let UserService = class UserService {
-    constructor(userModel) {
-        this.userModel = userModel;
-    }
-    async create(createUserDto) {
-        const user = await this.userModel.create({
-            id: (0, uuid_1.v4)(),
-            name: createUserDto.name,
-            email: createUserDto.email,
-            password: createUserDto.password,
-        });
-        return {
-            message: 'User created',
-            user,
-        };
-    }
-    async findOneUser(id) {
-        const user = await this.userModel.get({
-            id,
-        });
-        console.log('user => ', user);
-        return user;
+    constructor(userRepository) {
+        this.userRepository = userRepository;
     }
     async findAll() {
-        const user = this.userModel.scan().exec();
-        return user;
+        return this.userRepository.find();
+    }
+    async create(createUserDto) {
+        const user = new user_entity_1.User();
+        user.age = createUserDto.age;
+        user.fullName = createUserDto.fullName;
+        user.gender = createUserDto.gender;
+        return this.userRepository.save(user);
+    }
+    async findOneUser(req) {
+        return this.userRepository.findOne(req.id);
     }
 };
 UserService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, nestjs_dynamoose_1.InjectModel)('user-table')),
-    __metadata("design:paramtypes", [Object])
+    __param(0, (0, common_1.Inject)('USER_REPOSITORY')),
+    __metadata("design:paramtypes", [typeorm_1.Repository])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

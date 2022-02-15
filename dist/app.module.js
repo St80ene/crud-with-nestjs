@@ -10,26 +10,13 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const products_module_1 = require("./products/products.module");
-const nestjs_dynamoose_1 = require("nestjs-dynamoose");
 const config_1 = require("@nestjs/config");
 const user_module_1 = require("./user/user.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [
-            config_1.ConfigModule.forRoot({ isGlobal: true }),
-            nestjs_dynamoose_1.DynamooseModule.forRoot({
-                aws: {
-                    accessKeyId: `${process.env.AWS_ACCESS_KEY}`,
-                    secretAccessKey: `${process.env.AWS_SECRET_ACCESS_KEY}`,
-                    region: `${process.env.AWS_REGION}`,
-                },
-            }),
-            products_module_1.ProductsModule,
-            user_module_1.UserModule,
-        ],
+        imports: [user_module_1.UserModule, config_1.ConfigModule.forRoot({ isGlobal: true })],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })
